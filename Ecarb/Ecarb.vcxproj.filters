@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Ecarb.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EcarbDoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EcarbView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CNameInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPageDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZSqlite3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZClassLib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CBasicWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CWndInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CWndInfoDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZListCtrl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZListEdit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDataItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDataItemDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemDatabase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemOperate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CWndItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CWndItemDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CComPort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZDevicePort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZSerialPort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZModbus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCommItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCommLog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemDBCheck.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZExcelImport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZOperateExcelFile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZExcelExport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDashboardStatic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CStatusLEDStatic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CWaveStatic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordDataDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordItemDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDataRecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecordStatic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CEcarbActivation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CActivation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPasswordInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HighResolutionTimeCounter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CAutoReportCheck.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Ecarb.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EcarbDoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EcarbView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CNameInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPageDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZSqlite3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CBasicWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CWndInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CWndInfoDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZListCtrl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZListEdit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDataItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDataItemDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemDatabase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemOperate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CWndItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CWndItemDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CComPort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZDevicePort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZSerialPort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZModbus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCommItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCommLog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemDBCheck.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZExcelImport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZOperateExcelFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZExcelExport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDashboardStatic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CStatusLEDStatic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CWaveStatic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordDataDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordItemDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDataRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRecordStatic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CEcarbActivation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CActivation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPasswordInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HighResolutionTimeCounter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CAutoReportCheck.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Ecarb.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\userimages.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\EcarbDoc.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Ecarb.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Toolbar256.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Ecarb.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>

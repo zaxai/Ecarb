@@ -1,0 +1,23 @@
+#ifndef _ZCLASSLIB_H
+#define _ZCLASSLIB_H
+#include "CPageDB.h"
+#include "CWndInfoDB.h"
+#include "CWndItemDB.h"
+#include "CDataItemDB.h"
+#include "ZListCtrl.h"
+#include "ZDevicePort.h"
+#include "ZModbus.h"
+#include "CCommItem.h"
+#include "ZExcelImport.h"
+#include "ZExcelExport.h"
+#include "CDashboardStatic.h"
+#include "CWaveStatic.h"
+#include "CStatusLEDStatic.h"
+#include "CRecordDB.h"
+#include "CRecordItemDB.h"
+#include "CRecordDataDB.h"
+#include "CRecordStatic.h"
+#include "CActivation.h"
+#include "HighResolutionTimeCounter.h"
+#include "CAutoReportCheck.h"
+#endif
