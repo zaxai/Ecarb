@@ -487,6 +487,23 @@ afx_msg LRESULT CBasicWnd::OnMsgrecvpro(WPARAM wParam, LPARAM lParam)
 {
 	switch (lParam)
 	{
+	case MSGUSER_CLOSEAPP:
+	{
+		if (m_p_wndinfo->GetWndType() == CWndInfo::TYPE_CALIBRATE)
+		{
+			int nCount = m_p_listItem->GetItemCount();
+			auto itDataItem = m_list_dataitem.begin();
+			for (int i = 0; i < nCount; ++i)
+			{
+				CString str;
+				str = m_p_listItem->GetItemText(i, 2);
+				itDataItem->SetTgtData(_ttof(str));
+				g_dataitemdb.Update(*itDataItem);
+				++itDataItem;
+			}
+		}
+	}
+	break;
 	case MSGUSER_COMMSTART:
 	{
 		m_dwTimeStart = DWORD(HighResolutionTimeCounter::NowOfMillisecond());

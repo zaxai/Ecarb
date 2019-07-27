@@ -204,6 +204,10 @@ afx_msg LRESULT CEcarbView::OnMsgrecvpro(WPARAM wParam, LPARAM lParam)
 	{
 	case MSGUSER_CLOSEAPP:
 	{
+		for (CBasicWnd * p : m_list_p_basicwnd)
+		{
+			p->SendMessage(WM_MSGRECVPRO, 0, MSGUSER_CLOSEAPP);
+		}
 		if (g_bIsCommunicating)
 		{
 			StopAutoReport();
@@ -1000,7 +1004,7 @@ void CEcarbView::OnRecvResult(int nResult, CString strRecvData)
 			if (g_bIsLogChecking&&m_p_commlog->GetSafeHwnd())
 				m_p_commlog->PostMessage(WM_MSGRECVPRO, (WPARAM)(&commitem.m_strRecvData), MSGUSER_RECVSUCCEED);
 			std::vector<CString> vec_strFixedData, vec_strValue;
-			if (g_modbus.DataDecode(commitem.m_strRecvData, vec_strFixedData, vec_strValue) == ZModbus::ERROR_OK)
+			if (g_modbus.DataDecode(commitem.m_strRecvData, vec_strFixedData, vec_strValue) == ZModbus::ERROR_OK && !vec_strValue.empty())
 			{
 				if (vec_strFixedData[ZModbus::INDEX_FUNCCODE] == _T("03") || vec_strFixedData[ZModbus::INDEX_FUNCCODE] == _T("04") || vec_strFixedData[ZModbus::INDEX_FUNCCODE] == _T("06"))
 				{
@@ -1040,7 +1044,7 @@ void CEcarbView::OnRecvResult(int nResult, CString strRecvData)
 			while(DivideFirstFrame(m_strAutoReportRemainData,strDataFrame))
 			{
 				std::vector<CString> vec_strFixedData, vec_strValue;
-				if (g_modbus.DataDecode(strDataFrame, vec_strFixedData, vec_strValue) == ZModbus::ERROR_OK)
+				if (g_modbus.DataDecode(strDataFrame, vec_strFixedData, vec_strValue) == ZModbus::ERROR_OK && !vec_strValue.empty())
 				{
 					if (vec_strFixedData[ZModbus::INDEX_FUNCCODE] == _T("03") || vec_strFixedData[ZModbus::INDEX_FUNCCODE] == _T("04") || vec_strFixedData[ZModbus::INDEX_FUNCCODE] == _T("06"))
 					{
