@@ -14,6 +14,7 @@ CDataRecord::CDataRecord(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DATARECORD, pParent)
 	, m_listRecord(this)
 	, m_bIsDeleting(false)
+	, m_bIsExporting(false)
 {
 
 }
@@ -34,12 +35,15 @@ void CDataRecord::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDataRecord, CDialogEx)
+	ON_MESSAGE(WM_MSGRECVPRO, &CDataRecord::OnMsgrecvpro)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_RECORD, &CDataRecord::OnTvnSelchangedTreeRecord)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_RECORD, &CDataRecord::OnNMDblclkListRecord)
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_OPERATE_REFRESHRECORD, &CDataRecord::OnOperateRefreshrecord)
 	ON_COMMAND(ID_OPERATE_DELETERECORD, &CDataRecord::OnOperateDeleterecord)
+	ON_COMMAND(ID_OPERATE_EXPORTRECORD, &CDataRecord::OnOperateExportrecord)
 	ON_UPDATE_COMMAND_UI(ID_OPERATE_DELETERECORD, &CDataRecord::OnUpdateOperateDeleterecord)
+	ON_UPDATE_COMMAND_UI(ID_OPERATE_EXPORTRECORD, &CDataRecord::OnUpdateOperateExportrecord)
 END_MESSAGE_MAP()
 
 
@@ -54,6 +58,28 @@ BOOL CDataRecord::OnInitDialog()
 	InitList();
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
+}
+
+
+afx_msg LRESULT CDataRecord::OnMsgrecvpro(WPARAM wParam, LPARAM lParam)
+{
+	switch (lParam)
+	{
+	case MSGUSER_EXPORTPROGRESS:
+	{
+	}
+	break;
+	case MSGUSER_EXPORTRESULT:
+	{
+		m_bIsExporting = false;
+		if (wParam)
+			AfxMessageBox(_T("Export succeeded"));
+		else
+			AfxMessageBox(_T("Export failed"));
+	}
+	break;
+	}
+	return 0;
 }
 
 
@@ -191,6 +217,18 @@ void CDataRecord::OnModifyItem(const ZListCtrl::ItemInfo & ii, const CString & s
 }
 
 
+void CDataRecord::OnExportProgressUpdate(int nProgress)
+{
+	PostMessage(WM_MSGRECVPRO, (WPARAM)nProgress, MSGUSER_EXPORTPROGRESS);
+}
+
+
+void CDataRecord::OnExportResult(bool bResult)
+{
+	PostMessage(WM_MSGRECVPRO, (WPARAM)bResult, MSGUSER_EXPORTRESULT);
+}
+
+
 void CDataRecord::OnNMDblclkListRecord(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
@@ -259,10 +297,102 @@ void CDataRecord::OnOperateDeleterecord()
 }
 
 
+void CDataRecord::OnOperateExportrecord()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (m_bIsExporting)
+	{
+		AfxMessageBox(_T("The last record is being exported in background,please wait a moment"));
+		return;
+	}
+	HTREEITEM hItem, hParent;
+	hItem = m_treeRecord.GetSelectedItem();
+	if (hItem&&hItem != m_treeRecord.GetRootItem())
+	{
+		CRecord * p_record = nullptr;
+		CRecordItem * p_rditem = nullptr;
+		hParent = m_treeRecord.GetParentItem(hItem);
+		if (hParent == m_treeRecord.GetRootItem())
+			p_record = (CRecord *)m_treeRecord.GetItemData(hItem);
+		else
+			p_rditem = (CRecordItem *)m_treeRecord.GetItemData(hItem);
+		CString strFilter;
+		strFilter = _T("Excel files(*.xlsx)|*.xlsx|Excel files(*.xls)|*.xls|All files(*.*)|*.*||");
+		CFileDialog fileDlg(FALSE, _T("xlsx"), _T("Record data"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, strFilter, this);
+		if (IDOK == fileDlg.DoModal())
+		{
+			m_strDestPath = fileDlg.GetPathName();
+			m_strDemoPath = ZUtil::GetExeCatalogPath() + _T("\\RecordDemo.xlsx");
+			m_vec2_strDataExport.clear();
+			int i = 0, j = 0;
+			unsigned int nMaxRow = 0;
+			std::vector<CString> vec_strRow;
+			if (p_rditem)
+			{
+				CRecordItem & rditem = *p_rditem;
+				std::vector<CRecordData> & vec_rddata = rditem.GetRecordData();
+				vec_strRow.resize(2);
+				m_vec2_strDataExport.resize(vec_rddata.size() + 1, vec_strRow);
+				m_vec2_strDataExport[0][i * 2] = _T("Time");
+				m_vec2_strDataExport[0][i * 2 + 1] = rditem.GetDataItemName();
+				j = 1;
+				for (CRecordData & rddata : vec_rddata)
+				{
+					m_vec2_strDataExport[j][i * 2].Format(_T("%.03f"), double(rddata.GetTgtTime()) / 1000.0);
+					m_vec2_strDataExport[j][i * 2 + 1] = ZUtil::GetDoubleString(rddata.GetTgtData(), rditem.GetDecimalDigits());
+					++j;
+				}
+			}
+			else
+			{
+				std::vector<CRecordItem> & vec_rditem = p_record->GetRecordItem();
+				vec_strRow.resize(vec_rditem.size() * 2);
+				for (CRecordItem & rditem : vec_rditem)
+				{
+					std::vector<CRecordData> & vec_rddata = rditem.GetRecordData();
+					if (vec_rddata.size() > nMaxRow)
+						nMaxRow = vec_rddata.size();
+				}
+				m_vec2_strDataExport.resize(nMaxRow + 1, vec_strRow);
+				for (CRecordItem & rditem : vec_rditem)
+				{
+
+					m_vec2_strDataExport[0][i * 2] = _T("Time");
+					m_vec2_strDataExport[0][i * 2 + 1] = rditem.GetDataItemName();
+					j = 1;
+					std::vector<CRecordData> & vec_rddata = rditem.GetRecordData();
+					for (CRecordData & rddata : vec_rddata)
+					{
+						m_vec2_strDataExport[j][i * 2].Format(_T("%.03f"), double(rddata.GetTgtTime()) / 1000.0);
+						m_vec2_strDataExport[j][i * 2 + 1] = ZUtil::GetDoubleString(rddata.GetTgtData(), rditem.GetDecimalDigits());
+						++j;
+					}
+					++i;
+				}
+			}
+			if (StartExport())
+				m_bIsExporting = true;
+			else
+				AfxMessageBox(_T("Export failed"));
+		}
+	}
+}
+
+
 void CDataRecord::OnUpdateOperateDeleterecord(CCmdUI *pCmdUI)
 {
 	// TODO: 在此添加命令更新用户界面处理程序代码
 	if (g_bIsCommunicating)
+		pCmdUI->Enable(FALSE);
+	else
+		pCmdUI->Enable(TRUE);
+}
+
+
+void CDataRecord::OnUpdateOperateExportrecord(CCmdUI *pCmdUI)
+{
+	// TODO: 在此添加命令更新用户界面处理程序代码
+	if (m_bIsExporting)
 		pCmdUI->Enable(FALSE);
 	else
 		pCmdUI->Enable(TRUE);

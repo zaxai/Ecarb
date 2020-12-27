@@ -267,7 +267,7 @@ void CItemDatabase::OnBnClickedButtonExportexcel()
 	if (IDOK == fileDlg.DoModal())
 	{
 		m_strDestPath = fileDlg.GetPathName();
-		m_strDemoPath = ZUtil::GetExeCatalogPath() + _T("\\Demo.xlsx");
+		m_strDemoPath = ZUtil::GetExeCatalogPath() + _T("\\ItemDemo.xlsx");
 		m_vec2_strDataExport.clear();
 		for (const CDataItem & dataitem : m_vec_dataitem)
 		{

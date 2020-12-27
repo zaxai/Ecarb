@@ -142,6 +142,9 @@
 #define ID_COMM_MODEAUTOREPORT          32827
 #define ID_COMMUNICATION_MASTER         32828
 #define ID_COMMUNICATION_AUTOREPORTMODE 32829
+#define ID_32830                        32830
+#define ID_OPERATE_EXPORTRECORD         32831
+#define ID_OPERATE_EXPORT               32832
 #define ID_INDICATOR_PROGRESS           61447
 
 // Next default values for new objects
@@ -149,7 +152,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        335
-#define _APS_NEXT_COMMAND_VALUE         32830
+#define _APS_NEXT_COMMAND_VALUE         32833
 #define _APS_NEXT_CONTROL_VALUE         1038
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

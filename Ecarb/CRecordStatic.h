@@ -20,7 +20,9 @@ private:
 	std::vector<Gdiplus::REAL> m_vec_fWidth;
 	int m_nSelItem;
 	Gdiplus::PointF m_ptMouseMove;
+	int m_nClickRecordDataID;
 	std::vector<std::vector<Gdiplus::RectF>> m_vec2_rcDataRange;
+	std::vector<std::deque<CRecordData>> m_vec_deque_rddata;
 	DWORD m_dwTimeOrigin;
 	DWORD m_dwMaxSpan;
 	Gdiplus::PointF m_ptOrigin;

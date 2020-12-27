@@ -12,6 +12,7 @@ IMPLEMENT_DYNAMIC(CRecordStatic, CStatic)
 
 CRecordStatic::CRecordStatic()
 	: m_nSelItem(-1)
+	, m_nClickRecordDataID(-1)
 	, m_dwTimeOrigin(0)
 	, m_dwMaxSpan(10000)
 	, m_bIsDragging(false)
@@ -133,14 +134,17 @@ void CRecordStatic::DrawRecord(CDC & dc)
 				graphics.DrawString(sz_strTextX[i], -1, &font, sz_rcTextX[i], &format, &brushBlack);//黑色等分X值
 		}
 		m_vec2_rcDataRange.clear();
+		m_vec_deque_rddata.clear();
 		m_vec2_rcDataRange.resize(m_vec_rditem.size());
+		m_vec_deque_rddata.resize(m_vec_rditem.size());
 		auto it_crItem = m_vec_crItem.begin();
 		auto it_fWidth = m_vec_fWidth.begin();
 		auto it_rcDataRange = m_vec2_rcDataRange.begin();
+		auto it_deque_rddata = m_vec_deque_rddata.begin();
 		for (CRecordItem & rditem: m_vec_rditem)
 		{
 			std::vector<CRecordData> & vec_rddata = rditem.GetRecordData();
-			std::deque<CRecordData> deque_rddata;
+			std::deque<CRecordData> & deque_rddata = *it_deque_rddata;
 			for (CRecordData & rddata : vec_rddata)
 			{
 				if (rddata.GetTgtTime() > m_dwTimeOrigin&&rddata.GetTgtTime() < m_dwTimeOrigin + m_dwMaxSpan)
@@ -186,9 +190,9 @@ void CRecordStatic::DrawRecord(CDC & dc)
 				Gdiplus::RectF * p_rcDataDot = new Gdiplus::RectF[nSize];
 				Gdiplus::RectF rcDataRange;
 				Gdiplus::REAL fDotRadius = *it_fWidth, fRangeRadius = *it_fWidth+3.0f;
-				CString strTextMouseOnDot;
-				Gdiplus::PointF ptTextMouseOnDot;
-				bool bMouseOnDot = false;
+				CString strTextMouseOnDot, strTextMouseClick;
+				Gdiplus::PointF ptTextMouseOnDot, ptTextMouseClick;
+				bool bMouseOnDot = false, bMouseClick = false;
 				for (int i = 0; i < nSize; ++i)
 				{
 					p_ptData[i].X = Gdiplus::REAL(m_ptOrigin.X + (double(deque_rddata[i].GetTgtTime()) - (double)m_dwTimeOrigin) / (double)m_dwMaxSpan*(m_ptX.X - m_ptOrigin.X));
@@ -198,14 +202,31 @@ void CRecordStatic::DrawRecord(CDC & dc)
 					it_rcDataRange->push_back(rcDataRange);
 					if (rcDataRange.Contains(m_ptMouseMove))
 					{
-						Gdiplus::Pen penCross(*it_crItem, 1.0f);
-						penCross.SetDashStyle(Gdiplus::DashStyleDashDot);
-						graphics.DrawLine(&penCross, Gdiplus::PointF(p_ptData[i].X, m_ptOrigin.Y), Gdiplus::PointF(p_ptData[i].X, m_ptY.Y));//十字竖线
-						graphics.DrawLine(&penCross, Gdiplus::PointF(m_ptOrigin.X, p_ptData[i].Y), Gdiplus::PointF(m_ptX.X, p_ptData[i].Y));//十字横线
-						CString strTgtData = ZUtil::GetDoubleString(deque_rddata[i].GetTgtData(), rditem.GetDecimalDigits());
-						strTextMouseOnDot.Format(_T("(%.03f,%s)"), double(deque_rddata[i].GetTgtTime()) / (double)dwSecond, strTgtData);
-						ptTextMouseOnDot=Gdiplus::PointF(p_ptData[i].X + 10.0f, p_ptData[i].Y - 20.0f);
-						bMouseOnDot = true;
+						if (p_ptData[i].X >= m_ptOrigin.X&&p_ptData[i].X <= m_ptX.X)
+						{
+							Gdiplus::Pen penCross(*it_crItem, 1.0f);
+							penCross.SetDashStyle(Gdiplus::DashStyleDashDot);
+							graphics.DrawLine(&penCross, Gdiplus::PointF(p_ptData[i].X, m_ptOrigin.Y), Gdiplus::PointF(p_ptData[i].X, m_ptY.Y));//十字竖线
+							graphics.DrawLine(&penCross, Gdiplus::PointF(m_ptOrigin.X, p_ptData[i].Y), Gdiplus::PointF(m_ptX.X, p_ptData[i].Y));//十字横线
+							CString strTgtData = ZUtil::GetDoubleString(deque_rddata[i].GetTgtData(), rditem.GetDecimalDigits());
+							strTextMouseOnDot.Format(_T("(%.03f,%s)"), double(deque_rddata[i].GetTgtTime()) / (double)dwSecond, strTgtData);
+							ptTextMouseOnDot = Gdiplus::PointF(p_ptData[i].X + 10.0f, p_ptData[i].Y - 20.0f);
+							bMouseOnDot = true;
+						}
+					}
+					if (m_nClickRecordDataID == deque_rddata[i].GetID())
+					{
+						if (p_ptData[i].X >= m_ptOrigin.X&&p_ptData[i].X <= m_ptX.X)
+						{
+							Gdiplus::Pen penCross(*it_crItem, 1.0f);
+							penCross.SetDashStyle(Gdiplus::DashStyleDashDot);
+							graphics.DrawLine(&penCross, Gdiplus::PointF(p_ptData[i].X, m_ptOrigin.Y), Gdiplus::PointF(p_ptData[i].X, m_ptY.Y));//十字竖线
+							graphics.DrawLine(&penCross, Gdiplus::PointF(m_ptOrigin.X, p_ptData[i].Y), Gdiplus::PointF(m_ptX.X, p_ptData[i].Y));//十字横线
+							CString strTgtData = ZUtil::GetDoubleString(deque_rddata[i].GetTgtData(), rditem.GetDecimalDigits());
+							strTextMouseClick.Format(_T("(%.03f,%s)"), double(deque_rddata[i].GetTgtTime()) / (double)dwSecond, strTgtData);
+							ptTextMouseClick = Gdiplus::PointF(p_ptData[i].X + 10.0f, p_ptData[i].Y - 20.0f);
+							bMouseClick = true;
+						}
 					}
 				}
 				int nIndexStart = 0, nIndexEnd = nSize;
@@ -227,12 +248,15 @@ void CRecordStatic::DrawRecord(CDC & dc)
 					graphics.FillEllipse(&brushBlack, p_rcDataDot[i]);//黑色采样点
 				if(bMouseOnDot)
 					graphics.DrawString(strTextMouseOnDot, -1, &font, ptTextMouseOnDot, &brushBlack);//黑色值
+				if (bMouseClick)
+					graphics.DrawString(strTextMouseClick, -1, &font, ptTextMouseClick, &brushBlack);//黑色值
 				delete[] p_ptData;
 				delete[] p_rcDataDot;
 			}
 			++it_crItem;
 			++it_fWidth;
 			++it_rcDataRange;
+			++it_deque_rddata;
 		}
 	}
 }
@@ -254,6 +278,27 @@ void CRecordStatic::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	SetFocus();
+	Gdiplus::PointF ptMouseClick = Gdiplus::PointF((Gdiplus::REAL)point.x, (Gdiplus::REAL)point.y);
+	bool bMatch = false;
+	int i = 0, j = 0;
+	for (std::vector<Gdiplus::RectF> & vec_rc : m_vec2_rcDataRange)
+	{
+		j = 0;
+		for (Gdiplus::RectF & rc : vec_rc)
+		{
+			if (rc.Contains(ptMouseClick))
+			{
+				m_nClickRecordDataID = m_vec_deque_rddata[i][j].GetID();
+				bMatch = true;
+				break;
+			}
+			++j;
+		}
+		if (bMatch)
+			break;
+		++i;
+	}
+	Invalidate();
 	CStatic::OnLButtonDown(nFlags, point);
 }
 
@@ -293,6 +338,7 @@ void CRecordStatic::OnMouseMove(UINT nFlags, CPoint point)
 		m_ptDragStart = point;
 	}
 	m_ptMouseMove = Gdiplus::PointF((Gdiplus::REAL)point.x, (Gdiplus::REAL)point.y);
+	bool bMatch = false;
 	int i = 0;
 	for (std::vector<Gdiplus::RectF> & vec_rc : m_vec2_rcDataRange)
 	{
@@ -301,9 +347,12 @@ void CRecordStatic::OnMouseMove(UINT nFlags, CPoint point)
 			if (rc.Contains(m_ptMouseMove))
 			{
 				m_nSelItem = i;
+				bMatch = true;
 				break;
 			}
 		}
+		if (bMatch)
+			break;
 		++i;
 	}
 	Invalidate();

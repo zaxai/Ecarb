@@ -66,7 +66,7 @@ void CComPort::InitUI()
 	CString sz_strBaudRate[] = { _T("300"),_T("600"),_T("1200"),_T("2400"),_T("4800"),_T("9600"), _T("19200"),_T("38400"),_T("57600"),_T("76800"),_T("115200") };
 	for (const CString & str : sz_strBaudRate)
 		m_comboBaudRate.AddString(str);
-	m_comboBaudRate.SetCurSel(5);
+	m_comboBaudRate.SetCurSel(6);
 	CString sz_strParity[] = { _T("None"),_T("Even"),_T("Odd"),_T("Mark"),_T("Space") };
 	for (const CString & str : sz_strParity)
 		m_comboParity.AddString(str);
