@@ -53,12 +53,12 @@ void CItemOperate::InitList()
 {
 	CRect rc;
 	m_listWndItem.GetClientRect(rc);
-	m_listWndItem.SetExtendedStyle(m_listWndItem.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES);
+	m_listWndItem.SetExtendedStyle(m_listWndItem.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listWndItem.InsertColumn(0, _T("项目名称"), LVCFMT_CENTER, rc.Width() / 3, 0);
 	m_listWndItem.InsertColumn(1, _T("起始地址"), LVCFMT_CENTER, rc.Width() / 3, 1);
 	m_listWndItem.InsertColumn(2, _T("初始数据"), LVCFMT_CENTER, rc.Width() / 3, 2);
 	m_listDatabaseItem.GetClientRect(rc);
-	m_listDatabaseItem.SetExtendedStyle(m_listDatabaseItem.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES);
+	m_listDatabaseItem.SetExtendedStyle(m_listDatabaseItem.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listDatabaseItem.InsertColumn(0, _T("项目名称"), LVCFMT_CENTER, rc.Width() / 3, 0);
 	m_listDatabaseItem.InsertColumn(1, _T("起始地址"), LVCFMT_CENTER, rc.Width() / 3, 1);
 	m_listDatabaseItem.InsertColumn(2, _T("初始数据"), LVCFMT_CENTER, rc.Width() / 3, 2);
@@ -96,20 +96,19 @@ void CItemOperate::InsertList(CListCtrl & list, const CDataItem & dataitem)
 void CItemOperate::OnBnClickedButtonInsert()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	int nSize = m_listDatabaseItem.GetItemCount();
-	auto itItemDB = m_list_itemDB.begin();
-	for (int i = 0; i < nSize; ++i)
+	POSITION pos = m_listDatabaseItem.GetFirstSelectedItemPosition();
+	while (pos)
 	{
-		if (m_listDatabaseItem.GetCheck(i))
+		int nIndex = m_listDatabaseItem.GetNextSelectedItem(pos);
+		auto itItemDB = m_list_itemDB.begin();
+		while (nIndex--)
+			++itItemDB;
+		auto itItemWnd = std::find(m_list_itemWnd.begin(), m_list_itemWnd.end(), *itItemDB);
+		if (itItemWnd == m_list_itemWnd.end())
 		{
-			auto itItemWnd = std::find(m_list_itemWnd.begin(), m_list_itemWnd.end(), *itItemDB);
-			if (itItemWnd == m_list_itemWnd.end())
-			{
-				m_list_itemWnd.push_back(*itItemDB);
-				InsertList(m_listWndItem, *itItemDB);
-			}
+			m_list_itemWnd.push_back(*itItemDB);
+			InsertList(m_listWndItem, *itItemDB);
 		}
-		++itItemDB;
 	}
 }
 
@@ -117,17 +116,21 @@ void CItemOperate::OnBnClickedButtonInsert()
 void CItemOperate::OnBnClickedButtonDelete()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	int nSize = m_listWndItem.GetItemCount();
+	std::vector<int> vec_nIndex;
+	POSITION pos = m_listWndItem.GetFirstSelectedItemPosition();
+	while (pos)
+	{
+		int nIndex = m_listWndItem.GetNextSelectedItem(pos);
+		vec_nIndex.push_back(nIndex);
+	}
+	int nSize = vec_nIndex.size();
 	for (int i = nSize - 1; i >= 0; --i)
 	{
-		if (m_listWndItem.GetCheck(i))
-		{
-			int nIndex = i;
-			auto it = m_list_itemWnd.begin();
-			while (nIndex--)
-				++it;
-			m_list_itemWnd.erase(it);
-			m_listWndItem.DeleteItem(i);
-		}
+		int nIndex = vec_nIndex[i];
+		auto it = m_list_itemWnd.begin();
+		while (nIndex--)
+			++it;
+		m_list_itemWnd.erase(it);
+		m_listWndItem.DeleteItem(vec_nIndex[i]);
 	}
 }
